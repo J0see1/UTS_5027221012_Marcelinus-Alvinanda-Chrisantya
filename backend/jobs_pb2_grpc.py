@@ -52,7 +52,7 @@ class JobServiceStub(object):
                 _registered_method=True)
         self.GetJob = channel.unary_unary(
                 '/JobService/GetJob',
-                request_serializer=jobs__pb2.JobId.SerializeToString,
+                request_serializer=jobs__pb2.JobTitle.SerializeToString,
                 response_deserializer=jobs__pb2.Job.FromString,
                 _registered_method=True)
         self.UpdateJob = channel.unary_unary(
@@ -120,7 +120,7 @@ def add_JobServiceServicer_to_server(servicer, server):
             ),
             'GetJob': grpc.unary_unary_rpc_method_handler(
                     servicer.GetJob,
-                    request_deserializer=jobs__pb2.JobId.FromString,
+                    request_deserializer=jobs__pb2.JobTitle.FromString,
                     response_serializer=jobs__pb2.Job.SerializeToString,
             ),
             'UpdateJob': grpc.unary_unary_rpc_method_handler(
@@ -213,7 +213,7 @@ class JobService(object):
             request,
             target,
             '/JobService/GetJob',
-            jobs__pb2.JobId.SerializeToString,
+            jobs__pb2.JobTitle.SerializeToString,
             jobs__pb2.Job.FromString,
             options,
             channel_credentials,

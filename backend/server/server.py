@@ -10,9 +10,9 @@ import jobs_pb2_grpc
 class JobService(jobs_pb2_grpc.JobServiceServicer):
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://localhost:27017/")  # Connect to MongoDB
-        self.db = self.client["JobVacancy"]  # Specify the database name
-        self.collection = self.db["JobList"]  # Specify the collection name
-        logging.info("Connected to MongoDB")  # Log when connected to MongoDB
+        self.db = self.client["JobVacancy"]  
+        self.collection = self.db["JobList"]  
+        logging.info("Connected to MongoDB")  
 
     def AddJob(self, request, context):
         logging.info("Received AddJob request: %s", request)
@@ -41,8 +41,8 @@ class JobService(jobs_pb2_grpc.JobServiceServicer):
         return jobs_pb2.JobList(jobs=job_list)
     
     def GetJob(self, request, context):
-        logging.info("Received GetJob request for job ID: %s", request.id)
-        job_data = self.collection.find_one({"id": request.id})
+        logging.info("Received GetJob request for job title: %s", request.title)
+        job_data = self.collection.find_one({"title": request.title})
         if job_data:
             job = jobs_pb2.Job(
                 id=job_data["id"],
@@ -56,16 +56,15 @@ class JobService(jobs_pb2_grpc.JobServiceServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("Job not found")
             return jobs_pb2.Job()
-
     # Implement other methods (GetJob, UpdateJob, DeleteJob) similarly
 
 def serve():
     logging.basicConfig(level=logging.INFO)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     jobs_pb2_grpc.add_JobServiceServicer_to_server(JobService(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('[::]:5000')
     server.start()
-    logging.info("Server started. Listening on port 50051...")
+    logging.info("Server started. Listening on port 5000...")
     server.wait_for_termination()
 
 if __name__ == '__main__':
