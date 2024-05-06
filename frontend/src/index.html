@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Job Management</title>
+    <title>LokerIT</title>
 </head>
-<body>
+<body class="bg-gray-900 text-white">
+
+    <nav class="bg-gray-600 p-4">
+        <div class="container px-12 flex justify-between items-center">
+            <h1 class="text-lg font-bold">LokerIT</h1>
+            <ul class="flex space-x-8">
+                <li><a href="http://127.0.0.1:5000/" class="hover:text-gray-300">Search</a></li>
+                <li><a href="http://127.0.0.1:5000/addJob" class="hover:text-gray-300">Add Job</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container mx-auto py-8">
-        <h1 class="text-3xl font-bold text-center">Job Management</h1>
+        <h1 class="text-3xl font-bold text-center">Find Your Dream Job</h1>
         
         <!-- Search Bar -->
-        <div class="pt-4 mx-auto w-1/2 flex">
-            <input id="jobTitle" class="border border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
+        <div id="search" class="pt-4 mx-auto w-1/2 flex">
+            <input id="jobTitle" class="border border-gray-600 bg-gray-800 h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full text-white"
               type="text" name="search" placeholder="Search by ID">
             <button type="button" onclick="getJobByTitle()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
         </div>
@@ -22,30 +33,15 @@
             <!-- Search result text will appear here -->
         </div>
 
-        <!-- Add Job Form -->
-        <h2 class="mt-8 text-xl font-semibold">Add Job</h2>
-        <form id="addJobForm" class="mt-4">
-            <label for="id" class="block">ID:</label>
-            <input type="text" id="id" name="id" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="title" class="block">Title:</label>
-            <input type="text" id="title" name="title" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="company" class="block">Company:</label>
-            <input type="text" id="company" name="company" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="location" class="block">Location:</label>
-            <input type="text" id="location" name="location" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="salary" class="block">Salary:</label>
-            <input type="number" id="salary" name="salary" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <button type="button" onclick="addJob()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Add Job</button>
-        </form>
-
-        <!-- Get All Jobs Button -->
-        <h2 class="mt-8 text-xl font-semibold">Get All Jobs</h2>
-        <button type="button" onclick="getAllJobs()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Get All Jobs</button>
-
-        <!-- Display All Jobs -->
-        <h2 class="mt-8 text-xl font-semibold">All Jobs</h2>
-        <ul id="jobList" class="mt-4"></ul>
-    </div>
+        <div class="container mx-auto py-8 flex flex-col items-center" id="jobs">
+            <!-- Get All Jobs Button -->
+            <h2 class="text-xl font-semibold">Get All Jobs</h2>
+            <button type="button" onclick="getAllJobs()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Get All Jobs</button>
+        
+            <!-- Display All Jobs -->
+            <h2 class="text-xl font-semibold mt-8">All Jobs</h2>
+            <ul id="jobList" class="mt-4"></ul>
+        </div>
 
     <!-- JavaScript Code -->
     <script>
@@ -120,6 +116,24 @@
             });
         }
 
+        function deleteJobById() {
+            var jobId = document.getElementById("deleteJobId").value;
+            fetch(`/deleteJob/${jobId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Log response from server
+                alert("Job deleted successfully!");
+                // Optionally, refresh job list after deletion
+                getAllJobs();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Failed to delete job.");
+            });
+        }
+        
     </script>
 </body>
 </html>

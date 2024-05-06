@@ -4,34 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Job Management</title>
+    <title>LokerIT</title>
 </head>
-<body>
-    <div class="container mx-auto py-8">
-        
+<body class="bg-gray-800 text-white">
+
+    <nav class="bg-gray-600 p-4">
+        <div class="container px-12 flex justify-between items-center">
+            <h1 class="text-lg font-bold">LokerIT</h1>
+            <ul class="flex space-x-8">
+                <li><a href="http://127.0.0.1:5000/" class="hover:text-gray-300">Search</a></li>
+                <li><a href="http://127.0.0.1:5000/addJob" class="hover:text-gray-300">Add Job</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto">
         <!-- Add Job Form -->
-        <h2 class="mt-8 text-xl font-semibold">Add Job</h2>
-        <form id="addJobForm" class="mt-4">
-            <label for="id" class="block">ID:</label>
-            <input type="text" id="id" name="id" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="title" class="block">Title:</label>
-            <input type="text" id="title" name="title" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="company" class="block">Company:</label>
-            <input type="text" id="company" name="company" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="location" class="block">Location:</label>
-            <input type="text" id="location" name="location" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <label for="salary" class="block">Salary:</label>
-            <input type="number" id="salary" name="salary" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
-            <button type="button" onclick="addJob()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Add Job</button>
-        </form>
-
+        <div class="mx-6">
+            <h2 class="mt-8 text-xl font-semibold text-center">Add Your Job</h2>
+            <form id="addJobForm" class="mt-4">
+                <label for="id" class="block">ID:</label>
+                <input type="text" id="id" name="id" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white"><br>
+                <label for="title" class="block">Title:</label>
+                <input type="text" id="title" name="title" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white"><br>
+                <label for="company" class="block">Company:</label>
+                <input type="text" id="company" name="company" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white"><br>
+                <label for="location" class="block">Location:</label>
+                <input type="text" id="location" name="location" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white"><br>
+                <label for="salary" class="block">Salary:</label>
+                <input type="number" id="salary" name="salary" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white"><br>
+                <div class="text-center">
+                    <button type="button" onclick="addJob()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Add Job</button>
+                </div>
+            </form>
+        </div>
         <!-- Get All Jobs Button -->
-        <h2 class="mt-8 text-xl font-semibold">Get All Jobs</h2>
-        <button type="button" onclick="getAllJobs()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Get All Jobs</button>
-
+        <h2 class="mt-8 text-xl font-semibold text-center">Get All Jobs</h2>
+        <div class="text-center">
+            <button type="button" onclick="getAllJobs()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Get All Jobs</button>
+        </div>  
         <!-- Display All Jobs -->
-        <h2 class="mt-8 text-xl font-semibold">All Jobs</h2>
-        <ul id="jobList" class="mt-4"></ul>
+        <h2 class="mt-8 text-xl font-semibold text-center">All Jobs</h2>
+        <ul id="jobList" class="mt-4 mx-6"></ul>
+
+        <!-- Modal for Editing Job Details -->
+        <div id="editJobModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <!-- This element is to trick the browser into centering the modal contents. -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg leading-6 font-medium text-white" id="modal-title">Edit Job Details</h3>
+                                <div class="mt-2">
+                                    <div>
+                                        <label for="editTitle" class="block text-white">Title:</label>
+                                        <input type="text" id="editTitle" name="editTitle" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white">
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="editCompany" class="block text-white">Company:</label>
+                                        <input type="text" id="editCompany" name="editCompany" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white">
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="editLocation" class="block text-white">Location:</label>
+                                        <input type="text" id="editLocation" name="editLocation" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white">
+                                    </div>
+                                    <div class="mt-2">
+                                        <label for="editSalary" class="block text-white">Salary:</label>
+                                        <input type="number" id="editSalary" name="editSalary" class="border border-gray-300 bg-gray-700 h-10 px-3 rounded-lg text-sm w-full mt-1 text-white">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button onclick="updateJob()" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Update</button>
+                        <button onclick="closeEditJobModal()" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- JavaScript Code -->
@@ -65,47 +121,112 @@
             .catch(error => console.error('Error:', error));
         }
 
-        function getAllJobs() {
-            // Send request to backend server to get all jobs
-            fetch('/allJob')  // Changed the URL to the Flask route
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Log response from server
-                // Update UI to display all jobs
-                var jobList = document.getElementById("jobList");
-                jobList.innerHTML = ""; // Clear existing list
-                data.jobs.forEach(job => {  // Modified to access data.jobs instead of data
-                    var listItem = document.createElement("li");
-                    listItem.textContent = `ID: ${job.id}, Title: ${job.title}, Company: ${job.company}, Location: ${job.location}, Salary: ${job.salary}`;
-                    jobList.appendChild(listItem);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        function getJobByTitle() {
-            var jobTitle = document.getElementById("jobTitle").value;   
-            // Send request to backend server to get job by title
-            fetch(`/job/${jobTitle}`)  // Assuming Flask route is '/job/<job_title>'
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Job not found');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data); // Log response from server
-                var jobList = document.getElementById("searchResult");
-                jobList.innerHTML = ""; // Clear existing list
+    function getAllJobs() {
+        fetch('/allJob')  
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            var jobList = document.getElementById("jobList");
+            jobList.innerHTML = ""; // Clear existing list
+            data.jobs.forEach(job => {
                 var listItem = document.createElement("li");
-                listItem.textContent = `Title: ${data.title}, Company: ${data.company}, Location: ${data.location}, Salary: ${data.salary}`;
+                listItem.textContent = `ID: ${job.id}, Title: ${job.title}, Company: ${job.company}, Location: ${job.location}, Salary: ${job.salary}`;
+                
+                // Create delete button
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.className = "bg-red-500 hover:bg-red-700 text-white font-bold rounded-md py-2 px-3 ml-16"; // Add Tailwind CSS classes
+                
+                deleteButton.onclick = function() {
+                    deleteJobById(job.id);
+                };
+
+                // Create update button
+                var updateButton = document.createElement("button");
+                updateButton.textContent = "Update";
+                updateButton.className = "bg-yellow-500 hover:bg-yellow-700 text-white font-bold rounded-md py-2 px-3 ml-4"; // Add Tailwind CSS classes
+                
+                updateButton.onclick = function() {
+                    openEditJobModal(job);
+                };
+
+                // Append buttons to list item
+                listItem.appendChild(deleteButton);
+                listItem.appendChild(updateButton);
+                
+                // Append list item to job list
                 jobList.appendChild(listItem);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Job not found');
             });
-        }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function openEditJobModal(job) {
+        // Populate the modal with current job details
+        document.getElementById("editTitle").value = job.title;
+        document.getElementById("editCompany").value = job.company;
+        document.getElementById("editLocation").value = job.location;
+        document.getElementById("editSalary").value = job.salary;
+
+        // Show the modal
+        document.getElementById("editJobModal").classList.remove("hidden");
+    }
+
+    function closeEditJobModal() {
+        // Hide the modal
+        document.getElementById("editJobModal").classList.add("hidden");
+    }
+
+    function deleteJobById(jobId) {
+        fetch(`/deleteJob/${jobId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            alert("Job deleted successfully!");
+            getAllJobs(); // Refresh job list after deletion
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Failed to delete job.");
+        });
+    }
+
+    function updateJob() {
+        var id = document.getElementById("id").value; // Get the job ID from the modal
+        var title = document.getElementById("editTitle").value;
+        var company = document.getElementById("editCompany").value;
+        var location = document.getElementById("editLocation").value;
+        var salary = document.getElementById("editSalary").value;
+
+        // Send request to backend server to update job
+        fetch(`/updateJob/${id}`, {  // Changed the URL to the Flask route
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                company: company,
+                location: location,
+                salary: parseInt(salary)
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Job not updated');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // Log response from server
+            alert('Job updated successfully');
+            closeEditJobModal(); // Close the modal after updating
+            getAllJobs(); // Refresh job list after updating
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
     </script>
 </body>
