@@ -14,6 +14,10 @@ message JobList {
   repeated Job jobs = 1;
 }
 
+message JobTitle {
+  string title = 1;
+}
+
 message JobId {
   string id = 1;
 }
@@ -26,7 +30,7 @@ service JobService {
   rpc AddJob (Job) returns (Job) {}
   // Read 
   rpc GetAll (Empty) returns (JobList) {}
-  rpc GetJob (JobId) returns (Job) {}
+  rpc GetJob (JobTitle) returns (Job) {}
   // Update
   rpc UpdateJob (Job) returns (Job) {}
   // Delete
