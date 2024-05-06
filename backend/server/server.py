@@ -56,7 +56,37 @@ class JobService(jobs_pb2_grpc.JobServiceServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("Job not found")
             return jobs_pb2.Job()
-    # Implement other methods (GetJob, UpdateJob, DeleteJob) similarly
+        
+    def UpdateJob(self, request, context):
+        logging.info("Received UpdateJob request for job ID: %s", request.id)
+        job_data = self.collection.find_one({"id": request.id})
+        if job_data:
+            update_data = {}
+            if request.title:
+                update_data["title"] = request.title
+            if request.company:
+                update_data["company"] = request.company
+            if request.location:
+                update_data["location"] = request.location
+            if request.salary:
+                update_data["salary"] = request.salary
+
+            self.collection.update_one({"id": request.id}, {"$set": update_data})
+            return jobs_pb2.Job(id=request.id, title=request.title, company=request.company, location=request.location, salary=request.salary)
+        else:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("Job not found")
+            return jobs_pb2.Job()
+
+    def DeleteJob(self, request, context):
+        logging.info("Received DeleteJob request for job ID: %s", request.id)
+        result = self.collection.delete_one({"id": request.id})
+        if result.deleted_count > 0:
+            return jobs_pb2.Empty()
+        else:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("Job not found")
+            return jobs_pb2.Empty()
 
 def serve():
     logging.basicConfig(level=logging.INFO)

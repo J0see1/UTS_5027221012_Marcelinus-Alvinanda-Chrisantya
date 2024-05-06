@@ -38,7 +38,6 @@ def add_job():
         response = grpc_stub.AddJob(job_request)
         return jsonify({"message": "Job added successfully"})
 
-
 @app.route("/allJob")
 def get_all_jobs():
     response = grpc_stub.GetAll(jobs_pb2.Empty())
@@ -53,6 +52,27 @@ def get_job(job_title):
         return jsonify(job_data)
     else:
         return jsonify({"message": "Job not found"}), 404
+    
+@app.route("/updateJob/<job_id>", methods=['PUT'])
+def update_job(job_id):
+    data = request.json
+    job_request = jobs_pb2.Job(
+        id=job_id,
+        title=data.get('title', ''),
+        company=data.get('company', ''),
+        location=data.get('location', ''),
+        salary=data.get('salary', 0)
+    )
+    response = grpc_stub.UpdateJob(job_request)
+    if response.id:
+        return jsonify({"message": "Job updated successfully"})
+    else:
+        return jsonify({"message": "Job not found"}), 404
+
+@app.route("/deleteJob/<job_id>", methods=['DELETE'])
+def delete_job(job_id):
+    grpc_stub.DeleteJob(jobs_pb2.JobId(id=job_id))
+    return jsonify({"message": "Job deleted successfully"})
 
 if __name__ == '__main__':
     app.run(debug=True)
