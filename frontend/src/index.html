@@ -53,7 +53,7 @@
             var salary = document.getElementById("salary").value;
 
             // Send request to backend server to add job
-            fetch('/addJob', {  // Changed the URL to the Flask route
+            fetch('/addJob', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -68,22 +68,20 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Log response from server
-                // Optionally, update UI based on response
+                console.log(data);
             })
             .catch(error => console.error('Error:', error));
         }
 
         function getAllJobs() {
             // Send request to backend server to get all jobs
-            fetch('/allJob')  // Changed the URL to the Flask route
+            fetch('/allJob') 
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Log response from server
-                // Update UI to display all jobs
+                console.log(data);
                 var jobList = document.getElementById("jobList");
-                jobList.innerHTML = ""; // Clear existing list
-                data.jobs.forEach(job => {  // Modified to access data.jobs instead of data
+                jobList.innerHTML = "";
+                data.jobs.forEach(job => { 
                     var listItem = document.createElement("li");
                     listItem.textContent = `ID: ${job.id}, Title: ${job.title}, Company: ${job.company}, Location: ${job.location}, Salary: ${job.salary}`;
                     jobList.appendChild(listItem);
@@ -95,7 +93,7 @@
         function getJobByTitle() {
             var jobTitle = document.getElementById("jobTitle").value;   
             // Send request to backend server to get job by title
-            fetch(`/job/${jobTitle}`)  // Assuming Flask route is '/job/<job_title>'
+            fetch(`/job/${jobTitle}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Job not found');
@@ -103,9 +101,9 @@
                 return response.json();
             })
             .then(data => {
-                console.log(data); // Log response from server
+                console.log(data);
                 var jobList = document.getElementById("searchResult");
-                jobList.innerHTML = ""; // Clear existing list
+                jobList.innerHTML = "";
                 var listItem = document.createElement("li");
                 listItem.textContent = `Title: ${data.title}, Company: ${data.company}, Location: ${data.location}, Salary: ${data.salary}`;
                 jobList.appendChild(listItem);
@@ -123,9 +121,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Log response from server
+                console.log(data); 
                 alert("Job deleted successfully!");
-                // Optionally, refresh job list after deletion
                 getAllJobs();
             })
             .catch(error => {
