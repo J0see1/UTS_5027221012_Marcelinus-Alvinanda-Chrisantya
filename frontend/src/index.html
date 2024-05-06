@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Job Management</title>
+</head>
+<body>
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold text-center">Job Management</h1>
+        
+        <!-- Search Bar -->
+        <div class="pt-4 mx-auto w-1/2 flex">
+            <input id="jobTitle" class="border border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
+              type="text" name="search" placeholder="Search by ID">
+            <button type="button" onclick="getJobByTitle()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
+        </div>
+    
+        <!-- Display Search Result -->
+        <div id="searchResult" class="mt-4 flex justify-center items-center text-center">
+            <!-- Search result text will appear here -->
+        </div>
+
+        <!-- Add Job Form -->
+        <h2 class="mt-8 text-xl font-semibold">Add Job</h2>
+        <form id="addJobForm" class="mt-4">
+            <label for="id" class="block">ID:</label>
+            <input type="text" id="id" name="id" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
+            <label for="title" class="block">Title:</label>
+            <input type="text" id="title" name="title" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
+            <label for="company" class="block">Company:</label>
+            <input type="text" id="company" name="company" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
+            <label for="location" class="block">Location:</label>
+            <input type="text" id="location" name="location" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
+            <label for="salary" class="block">Salary:</label>
+            <input type="number" id="salary" name="salary" class="border border-gray-300 bg-white h-10 px-3 rounded-lg text-sm w-full mt-1"><br>
+            <button type="button" onclick="addJob()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Add Job</button>
+        </form>
+
+        <!-- Get All Jobs Button -->
+        <h2 class="mt-8 text-xl font-semibold">Get All Jobs</h2>
+        <button type="button" onclick="getAllJobs()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Get All Jobs</button>
+
+        <!-- Display All Jobs -->
+        <h2 class="mt-8 text-xl font-semibold">All Jobs</h2>
+        <ul id="jobList" class="mt-4"></ul>
+    </div>
+
+    <!-- JavaScript Code -->
+    <script>
+        function addJob() {
+            var id = document.getElementById("id").value;
+            var title = document.getElementById("title").value;
+            var company = document.getElementById("company").value;
+            var location = document.getElementById("location").value;
+            var salary = document.getElementById("salary").value;
+
+            // Send request to backend server to add job
+            fetch('/addJob', {  // Changed the URL to the Flask route
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    title: title,
+                    company: company,
+                    location: location,
+                    salary: parseInt(salary)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Log response from server
+                // Optionally, update UI based on response
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getAllJobs() {
+            // Send request to backend server to get all jobs
+            fetch('/allJob')  // Changed the URL to the Flask route
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Log response from server
+                // Update UI to display all jobs
+                var jobList = document.getElementById("jobList");
+                jobList.innerHTML = ""; // Clear existing list
+                data.jobs.forEach(job => {  // Modified to access data.jobs instead of data
+                    var listItem = document.createElement("li");
+                    listItem.textContent = `ID: ${job.id}, Title: ${job.title}, Company: ${job.company}, Location: ${job.location}, Salary: ${job.salary}`;
+                    jobList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getJobByTitle() {
+            var jobTitle = document.getElementById("jobTitle").value;   
+            // Send request to backend server to get job by title
+            fetch(`/job/${jobTitle}`)  // Assuming Flask route is '/job/<job_title>'
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Job not found');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // Log response from server
+                var jobList = document.getElementById("searchResult");
+                jobList.innerHTML = ""; // Clear existing list
+                var listItem = document.createElement("li");
+                listItem.textContent = `Title: ${data.title}, Company: ${data.company}, Location: ${data.location}, Salary: ${data.salary}`;
+                jobList.appendChild(listItem);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Job not found');
+            });
+        }
+
+    </script>
+</body>
+</html>
