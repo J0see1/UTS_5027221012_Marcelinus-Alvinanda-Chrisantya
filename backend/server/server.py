@@ -1,7 +1,6 @@
 import grpc
 import sys
-sys.path.append('../')  # Assuming the parent directory of 'backend' is two levels up
-import logging
+sys.path.append('../') 
 import pymongo
 from concurrent import futures
 import jobs_pb2
@@ -9,7 +8,7 @@ import jobs_pb2_grpc
 
 class JobService(jobs_pb2_grpc.JobServiceServicer):
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb://localhost:27017/")  # Connect to MongoDB
+        self.client = pymongo.MongoClient("mongodb://localhost:27017/") 
         self.db = self.client["JobVacancy"]  
         self.collection = self.db["JobList"]  
         logging.info("Connected to MongoDB")  
@@ -23,7 +22,7 @@ class JobService(jobs_pb2_grpc.JobServiceServicer):
             "location": request.location,
             "salary": request.salary
         }
-        self.collection.insert_one(job_data)  # Insert job data into MongoDB
+        self.collection.insert_one(job_data) 
         return request
 
     def GetAll(self, request, context):
