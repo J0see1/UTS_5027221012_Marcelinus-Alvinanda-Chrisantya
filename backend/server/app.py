@@ -8,7 +8,7 @@ import jobs_pb2_grpc
 import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app) 
 
 # gRPC client setup
 grpc_channel = grpc.insecure_channel('localhost:5000') 

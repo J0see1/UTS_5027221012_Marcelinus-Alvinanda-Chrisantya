@@ -5,6 +5,7 @@ import pymongo
 from concurrent import futures
 import jobs_pb2
 import jobs_pb2_grpc
+import logging
 
 class JobService(jobs_pb2_grpc.JobServiceServicer):
     def __init__(self):

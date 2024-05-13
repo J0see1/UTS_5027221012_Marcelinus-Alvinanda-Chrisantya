@@ -161,18 +161,16 @@
     }
 
     function openEditJobModal(job) {
-        // Populate the modal with current job details
+        document.getElementById("id").value = job.id;
         document.getElementById("editTitle").value = job.title;
         document.getElementById("editCompany").value = job.company;
         document.getElementById("editLocation").value = job.location;
         document.getElementById("editSalary").value = job.salary;
 
-        // Show the modal
         document.getElementById("editJobModal").classList.remove("hidden");
     }
 
     function closeEditJobModal() {
-        // Hide the modal
         document.getElementById("editJobModal").classList.add("hidden");
     }
 
